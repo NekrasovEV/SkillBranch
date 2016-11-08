@@ -1,20 +1,21 @@
+const express = require('express');
+const cors = require('cors')
+const app = express();
 
-let Handler = require('./library/handler');
-
-/*
-import express from 'express';
-
-let app = express();
+app.use(cors());
 
 app.get('/', function (req, res) {
-	res.send('Hello World!');
+	let {a = 0, b = 0} = req.query;
+
+	a = parseInt(a, 8) || 0;
+	b = parseInt(b, 8) || 0;
+
+	let sum = a + b;
+
+	res.send(sum.toString());
 });
 
 
 app.listen(3000, function () {
 	console.log('Example app listening on port 3000!');
 });
-	*/
-
-let handler = new Handler('https://pokeapi.co/api/v2/pokemon');
-handler.process();
