@@ -56,6 +56,18 @@ function ucfirst(str)
 }
 
 
+app.get('/task2c', function (req, res) {
+	let ret;
+	let {username = ''} = req.query;
+
+
+	let reg = username.match(/(?:(?:http[s]?:\/{2})|\/{2}|(?:.+)\/)?(?:@)?(?:.+?\/)?(?:@?)([\w._]+)/i) || [];
+
+	ret = reg[1];
+
+	res.send(`@${ret}`);
+});
+
 
 
 
