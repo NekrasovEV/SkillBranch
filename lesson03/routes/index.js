@@ -9,7 +9,7 @@ module.exports = function(param){
 	routes.use('/task3A',task3A(param));
 
 	routes.all('*', async function (req, res) {
-		return await res.status(404).send("Not found");
+		return await res.status(404).send("Not Found");
 	})
 
 	routes.use(async function (err, req, res, next) {
