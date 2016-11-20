@@ -1,8 +1,12 @@
 const express = require('express');
-const cors = require('cors')
+const cors = require('cors');
+const bodyParser = require('body-parser');
+
 const app = express();
 
 app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/', function (req, res) {
 	let {a = 0, b = 0} = req.query;
@@ -69,7 +73,69 @@ app.get('/task2c', function (req, res) {
 });
 
 
+app.get('/task2d', function (req, res) {
+	let ret = 'Invalid color';
+	let {color = ''} = req.query;
+	let result;
 
+	let parse = require('parse-color');
+
+	color = color.replace(/\s|%20/g,'');
+
+	console.log(req.query);
+
+	let isHex  = /(^#?[0-9A-Fa-f]{6}$)|(^#?[0-9A-Fa-f]{3}$)/i.test(color);
+	let isFunc = /^((rgb|hs[lv]|cmyk|lab)a?)\s*/i.exec(color);
+
+	if(isHex){
+		color = color.replace(/[#]/i,'');
+		result = parse(`#${color}`);
+	}else if(isFunc){
+		let isOk = true;
+
+		let func = /^((?:rgb|hs[lv]|cmyk|xyz|lab)a?)\s*\(([^\)]*)\)/.exec(color);
+
+		let data = func[2].replace(/^\s+|\s+$/g, '').split(/\s*,\s*/);
+
+		let parts = data.map(function (x, i){
+				if (/%$/.test(x)) {
+					return parseFloat(x) / 100;
+				}
+				return parseFloat(x);
+			});
+
+
+		if(parts.length !== 3)
+			isOk = false;
+
+		switch(func[1]) {
+			case 'hsl':
+				isOk = !/%$/.test(data[0]);
+				isOk = isOk && /%$/.test(data[1]);
+				isOk = isOk && /%$/.test(data[2]);
+
+				isOk = isOk && parts[0] < 255 && parts[0] >= 0;
+				isOk = isOk && parts[1] >= 0 && parts[1] <= 1;
+				isOk = isOk && parts[2] >= 0 && parts[2] <= 1;
+				break;
+			default:
+				parts.forEach(elem => {
+					if(elem > 255)
+						isOk = false;
+				});
+		}
+
+
+
+		if(isOk)
+			result = parse(color);
+	}
+
+	if(result && result.hex !== 'undefined')
+		ret = result.hex;
+
+	res.send(`${ret}`);
+});
 
 
 
