@@ -16,17 +16,20 @@ class App {
 
 	async prepare(){
 		let res;
+		let json;
 		try{
 			res = await fetch(prepareDataUrl)
 
 			if(!res)
 				throw new Error("Не удалось загрузить структуру компьютера");
 
-			this.data = await res.json();
+			json = await res.json();
 		}
 		catch(err) {
 			console.log(err);
 		}
+
+		return json;
 	}
 
 	startApp(){
@@ -39,6 +42,11 @@ class App {
 		this.app.use(cors());
 		this.app.use(async  (req, res, next) => {
 			req.data = this.data;
+			next();
+		})
+		this.app.use(async  (req, res, next) => {
+
+			req.data = await this.prepare()
 			next();
 		})
 	}
