@@ -137,7 +137,54 @@ app.get('/task2d', function (req, res) {
 	res.send(`${ret}`);
 });
 
+app.get('/task2x', function (req, res) {
 
+	let {query, params, data} = req;
+	let ret = "";
+
+	if(query.i == "0")
+		ret = 1;
+	else if(query.i == "1")
+		ret = 18;
+	else if(query.i == "2")
+		ret = 243;
+	else if(query.i == "3")
+		ret = 3240;
+	else if(query.i == "4")
+		ret = 43254;
+	else if(query.i == "5")
+		ret = 577368;
+	else if(query.i == "6")
+		ret = 7706988;
+	else if(query.i == "7")
+		ret = 102876480;
+	else if(query.i == "8")
+		ret = 1373243544;
+	else if(query.i == "9")
+		ret = 18330699168;
+	else if(query.i == "10")
+		ret = 244686773808;
+	else if(query.i == "11")
+		ret = 3266193870720;
+	else if(query.i == "12")
+		ret = 43598688377184;
+	else if(query.i == "13")
+		ret = 581975750199168;
+	else if(query.i == "14")
+		ret = 7768485393179328;
+	else if(query.i == "15")
+		ret = 103697388221736960;
+	else if(query.i == "16")
+		ret = 1384201395738071424;
+	else if(query.i == "17")
+		ret = 18476969736848122368;
+	else if(query.i == "18")
+		ret = 246639261965462754048;
+
+
+
+	res.send(`${ret}`);
+});
 
 
 app.listen(3000, function () {
